@@ -1,0 +1,25 @@
+name: Run Azure Login with OIDC
+on: [push]
+
+permissions:
+      id-token: write
+      contents: read
+      
+jobs: 
+  Windows-latest:
+      runs-on: windows-latest
+      steps:
+        - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
+          uses: azure/login@v1
+          with:
+            client-id: 'a44a3f89-f8ed-4b18-884b-4a015e309698'
+            tenant-id: '5b69c326-f615-4d74-a7de-f88768a58745'
+            subscription-id: '57cb9acc-e5d0-4ebf-9e93-8a26bb826f7a' 
+            enable-AzPSSession: true
+
+        - name: 'Get RG with powershell action'
+          uses: azure/powershell@v1
+          with:
+             inlineScript: |
+               Get-AzResourceGroup
+             azPSVersion: "latest"

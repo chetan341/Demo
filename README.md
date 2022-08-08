@@ -1,2 +1,2 @@
-# Demo
-demo purposes only
+# HelloWorld-php
+Sample hello world app for PHP!

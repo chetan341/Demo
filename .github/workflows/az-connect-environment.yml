@@ -1,8 +1,7 @@
 name: Run Azure Login with OIDC
-push:
-    branches: [ feature/github-action-azlogin ]
-pull_request:
-    branches: [ feature/github-action-azlogin ]
+
+on:
+  workflow_dispatch
 
 permissions:
       id-token: write
@@ -11,6 +10,7 @@ permissions:
 jobs: 
   Windows-latest:
       runs-on: windows-latest
+      environment: dev
       steps:
         - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
           uses: azure/login@v1

@@ -1,8 +1,10 @@
 name: Run Azure Login with OIDC
 push:
-    branches: [ feature/github-action-azlogin ]
-pull_request:
-    branches: [ feature/github-action-azlogin ]
+    branches: 
+          - feature/github-action-azlogin
+          - main
+    tags:        
+          - az-login
 
 permissions:
       id-token: write

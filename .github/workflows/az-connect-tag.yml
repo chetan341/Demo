@@ -1,10 +1,5 @@
 name: Run Azure Login - OIDC
-push:
-    branches: 
-          - feature/github-action-azlogin
-          - main
-    tags:        
-          - az-login
+on: [workflow_dispatch]
 
 permissions:
       id-token: write

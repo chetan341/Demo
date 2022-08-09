@@ -47,7 +47,8 @@ jobs:
         - name: 'Get RG with powershell action'
           uses: azure/powershell@v1
           with:
-             inlineScript: |              
+             inlineScript: |   
+               Import-Module AzureAD           
                Get-AzureADUser -All
                Get-AzResourceGroup 
              azPSVersion: "latest"

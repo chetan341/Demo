@@ -17,11 +17,12 @@ jobs:
             subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
             enable-AzPSSession: true
 
-        - uses: actions/checkout@v3
+        #- uses: actions/checkout@v3
         - name: Install from PSGallery
           shell: pwsh
           run: |
-            Set-PSRepository PSGallery -InstallationPolicy Trusted
+            Set-PSRepository PSGallery -InstallationPolicy Trusted            
+            Write-Output "Installing AzureAD"
             Install-Module AzureAD     
             $path = (Get-Module -ListAvailable Az*) |Select-Object Path,Version, Name |Where-Object -Property "Name" -EQ -Value "AzureAD"
             $($path.Path)
@@ -39,8 +40,13 @@ jobs:
             }else{              
                 Copy-Item -Path $modulePath -Destination "$moduleBasePath\$($path.Name.ToLower())_$($path.Version)" -Recurse
             }
+            Write-Output "Importing AzureAD module"
             Import-Module -Name AzureAD
-            Connect-AzureAD 
+            
+            Write-Output "Calling Connect-AzureAD"
+            $Credential = Get-Credential
+            Connect-AzureAD -Credential $Credential
+            Write-Output "Fetching AzureAD users"
             Get-AzureADUser -All $true
 
         - name: 'Get RG with powershell action'

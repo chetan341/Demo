@@ -34,5 +34,6 @@ jobs:
           uses: azure/powershell@v1
           with:
              inlineScript: |
+               Import-Module -Name AzureAD
                Get-AzureADUser -All
              azPSVersion: "latest"

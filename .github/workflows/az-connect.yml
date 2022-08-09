@@ -9,7 +9,19 @@ jobs:
   install-dependencies:
     name: Install dependencies
     runs-on: windows-latest
-    steps:
+    
+
+  Windows-latest:
+      runs-on: windows-latest
+      steps:
+        - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
+          uses: azure/login@v1
+          with:
+            client-id: ${{ secrets.AZURE_CLIENT_ID }}
+            tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
+            enable-AzPSSession: true
+
       - uses: actions/checkout@v3
       - name: Install from PSGallery
         shell: pwsh
@@ -32,25 +44,12 @@ jobs:
           }else{              
               Copy-Item -Path $modulePath -Destination "$moduleBasePath\$($path.Name.ToLower())_$($path.Version)" -Recurse
           }
-
-  Windows-latest:
-      runs-on: windows-latest
-      steps:
-        - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
-          uses: azure/login@v1
-          with:
-            client-id: ${{ secrets.AZURE_CLIENT_ID }}
-            tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
-            enable-AzPSSession: true
-
+          Import-Module -Name AzureAD
+          Get-AzureADUser -All
+          
         - name: 'Get RG with powershell action'
           uses: azure/powershell@v1
           with:
              inlineScript: |   
-               $path = (Get-Module -ListAvailable Az*) |Select-Object Path,Version, Name |Where-Object -Property "Name" -EQ -Value "AzureAD"
-               $($path.Path)
-               Import-Module -Name "$($path.Path)"     
-               Get-AzureADUser -All
                Get-AzResourceGroup 
              azPSVersion: "latest"

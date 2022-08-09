@@ -32,6 +32,8 @@ jobs:
           uses: azure/powershell@v1
           with:
              inlineScript: |
+               CD "C:\Users\runneradmin\Documents\PowerShell\Modules\AzureAD"
+               DIR
                Import-Module -Name "C:\Users\runneradmin\Documents\PowerShell\Modules\AzureAD" -Verbose
                Get-AzResourceGroup               
                Get-AzureADUser -All

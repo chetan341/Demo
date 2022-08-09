@@ -15,7 +15,8 @@ jobs:
         shell: pwsh
         run: |
           Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module AzureAD           
+          Install-Module AzureAD   
+          (Get-Module -ListAvailable Az*).Path        
 
   Windows-latest:
       runs-on: windows-latest
@@ -32,9 +33,6 @@ jobs:
           uses: azure/powershell@v1
           with:
              inlineScript: |
-               CD "C:\Users\runneradmin\Documents\PowerShell\Modules\AzureAD"
-               DIR
-               Import-Module -Name "C:\Users\runneradmin\Documents\PowerShell\Modules\AzureAD" -Verbose
-               Get-AzResourceGroup               
-               Get-AzureADUser -All
+               (Get-Module -ListAvailable Az*).Path
+               Get-AzResourceGroup 
              azPSVersion: "latest"

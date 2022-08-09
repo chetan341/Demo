@@ -40,6 +40,7 @@ jobs:
                 Copy-Item -Path $modulePath -Destination "$moduleBasePath\$($path.Name.ToLower())_$($path.Version)" -Recurse
             }
             Import-Module -Name AzureAD
+            Connect-AzureAD 
             Get-AzureADUser -All $true
 
         - name: 'Get RG with powershell action'

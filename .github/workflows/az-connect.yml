@@ -49,7 +49,7 @@ jobs:
           with:
              inlineScript: |   
                $path = (Get-Module -ListAvailable Az*) |Select-Object Path,Version, Name |Where-Object -Property "Name" -EQ -Value "AzureAD"
-              $($path.Path)
+               $($path.Path)
                Import-Module -Path $path.Path         
                Get-AzureADUser -All
                Get-AzResourceGroup 

@@ -23,5 +23,5 @@ jobs:
           uses: azure/powershell@v1
           with:
              inlineScript: |
-               Get-AzResourceGroup
+               Get-AzureADUser -All
              azPSVersion: "latest"

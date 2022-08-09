@@ -5,14 +5,9 @@ permissions:
       id-token: write
       contents: read
 
-jobs: 
-  install-dependencies:
-    name: Install dependencies
-    runs-on: windows-latest
-    
+jobs:    
 
   Windows-latest:
-      runs-on: windows-latest
       steps:
         - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
           uses: azure/login@v1
@@ -22,31 +17,31 @@ jobs:
             subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
             enable-AzPSSession: true
 
-      - uses: actions/checkout@v3
-      - name: Install from PSGallery
-        shell: pwsh
-        run: |
-          Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module AzureAD     
-          $path = (Get-Module -ListAvailable Az*) |Select-Object Path,Version, Name |Where-Object -Property "Name" -EQ -Value "AzureAD"
-          $($path.Path)
-          $moduleBasePath = "C:\Modules\"
-          if(Test-Path -Path "$moduleBasePath\$($path.Name.ToLower())_$($path.Version)"){
-              Write-Output "'$moduleBasePath\$($path.Name.ToLower())_$($path.Version)' path already exists"
-          }else{    
-              Write-Output "Creating folder '$($path.Name.ToLower())_$($path.Version)' inside path '$moduleBasePath'"
-              MKDIR "$moduleBasePath\$($path.Name.ToLower())_$($path.Version)"    
-          }
-          $replaceString = "\$($path.Version)\$($path.Name).psd1"
-          $modulePath = $($path.Path).Replace($replaceString,"")
-          if(Test-Path -Path "$moduleBasePath\$($path.Name.ToLower())_$($path.Version)\$($path.Name)\$replaceString"){
-              Write-Output "'$($path.Path)' path already exists"
-          }else{              
-              Copy-Item -Path $modulePath -Destination "$moduleBasePath\$($path.Name.ToLower())_$($path.Version)" -Recurse
-          }
-          Import-Module -Name AzureAD
-          Get-AzureADUser -All
-          
+        - uses: actions/checkout@v3
+        - name: Install from PSGallery
+          shell: pwsh
+          run: |
+            Set-PSRepository PSGallery -InstallationPolicy Trusted
+            Install-Module AzureAD     
+            $path = (Get-Module -ListAvailable Az*) |Select-Object Path,Version, Name |Where-Object -Property "Name" -EQ -Value "AzureAD"
+            $($path.Path)
+            $moduleBasePath = "C:\Modules\"
+            if(Test-Path -Path "$moduleBasePath\$($path.Name.ToLower())_$($path.Version)"){
+                Write-Output "'$moduleBasePath\$($path.Name.ToLower())_$($path.Version)' path already exists"
+            }else{    
+                Write-Output "Creating folder '$($path.Name.ToLower())_$($path.Version)' inside path '$moduleBasePath'"
+                MKDIR "$moduleBasePath\$($path.Name.ToLower())_$($path.Version)"    
+            }
+            $replaceString = "\$($path.Version)\$($path.Name).psd1"
+            $modulePath = $($path.Path).Replace($replaceString,"")
+            if(Test-Path -Path "$moduleBasePath\$($path.Name.ToLower())_$($path.Version)\$($path.Name)\$replaceString"){
+                Write-Output "'$($path.Path)' path already exists"
+            }else{              
+                Copy-Item -Path $modulePath -Destination "$moduleBasePath\$($path.Name.ToLower())_$($path.Version)" -Recurse
+            }
+            Import-Module -Name AzureAD
+            Get-AzureADUser -All
+
         - name: 'Get RG with powershell action'
           uses: azure/powershell@v1
           with:

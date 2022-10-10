@@ -7,17 +7,6 @@ permissions:
       contents: read
       
 jobs:  
-  install-dependencies:
-    name: Install dependencies
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install from PSGallery
-        shell: pwsh
-        run: |
-          Set-PSRepository PSGallery -InstallationPolicy Trusted
-          Install-Module AzureAD
-
   Windows-latest:
       runs-on: windows-latest
       environment: dev
@@ -31,9 +20,8 @@ jobs:
             enable-AzPSSession: true
 
         - name: 'Get RG with powershell action'
-          uses: azure/powershell@v1
+          uses: azure/powershell@v5
           with:
-             inlineScript: |
-               Import-Module -Name "C:\Users\runneradmin\Documents\PowerShell\Modules\AzureAD" -Verbose
-               Get-AzureADUser -All
+             inlineScript: |               
+               Get-AzADGroup
              azPSVersion: "latest"

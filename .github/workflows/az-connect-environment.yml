@@ -1,4 +1,4 @@
-name: Run Azure Login - OIDC
+name: Run Get-ADGroups - OIDC
 
 on: [workflow_dispatch]
 

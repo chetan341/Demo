@@ -20,7 +20,7 @@ jobs:
             enable-AzPSSession: true
 
         - name: 'Get RG with powershell action'
-          uses: azure/powershell@v5
+          uses: azure/powershell@v1
           with:
              inlineScript: |               
                Get-AzADGroup

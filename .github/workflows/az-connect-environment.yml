@@ -24,5 +24,6 @@ jobs:
           with:
              inlineScript: |               
                $list = Get-AzADGroup
+               $members = Get-AzureADGroupMember -ObjectId "5a86dc4c-13e3-451b-bd0e-ec5f697fd007"
                Write-Output $list
              azPSVersion: "latest"

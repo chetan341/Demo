@@ -37,7 +37,7 @@ jobs:
         - name: Install OIDC Client from Core Package
           run: #npm install @actions/core
                #npm install @actions/github
-               install-module -name JWTDetails
+               install-module -name JWTDetails -Scope CurrentUser -Force
         - name: 'Add SG Members'
           uses: azure/powershell@v1
           with:

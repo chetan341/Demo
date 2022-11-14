@@ -35,7 +35,7 @@ jobs:
                 core.setOutput('IDTOKENURL', runtimeUrl.trim())
                 
         - run: |
-                    IDTOKEN=$(curl -H "Authorization: bearer  ${{steps.script.outputs.TOKEN}}" ${{steps.script.outputs.IDTOKENURL}}  -H "Accept: application/json; api-version=2.0" -H "Content-Type: application/json" -d "{}" | jq -r '.value')
+                    IDTOKEN=${{steps.script.outputs.TOKEN}}
                     echo $IDTOKEN
                     
           id: tokenid

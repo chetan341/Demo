@@ -35,8 +35,9 @@ jobs:
                 core.setOutput('IDTOKENURL', runtimeUrl.trim())
                 
         - name: Install OIDC Client from Core Package
-          run: npm install @actions/core
-               npm install @actions/github
+          run: #npm install @actions/core
+               #npm install @actions/github
+               install-module -name JWTDetails
         - name: 'Add SG Members'
           uses: azure/powershell@v1
           with:

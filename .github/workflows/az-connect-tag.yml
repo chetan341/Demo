@@ -45,7 +45,7 @@ jobs:
               inlineScript: |
                     Get-JWTDetails ${{steps.script.outputs.TOKEN}}
                     echo ${{steps.script.outputs.IDTOKENURL}}
-                    $apiUrl=${{steps.script.outputs.IDTOKENURL}}
+                    $apiUrl="${{steps.script.outputs.IDTOKENURL}}"
                     $bearer_Token = @{
                               Authorization = "Bearer ${{steps.script.outputs.TOKEN}}" 
                           }

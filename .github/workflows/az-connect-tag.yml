@@ -29,9 +29,9 @@ jobs:
             enable-AzPSSession: true
 
         - name: Azure CLI script file
-          uses: azure/CLI@v1
+          uses: azure/powershell@v1
           with:
-              azcliversion: 2.30.0
+              azPSVersion: "latest"
               inlineScript: |
                 echo ${env:ACTIONS_RUNTIME_TOKEN}
                 echo ${env:ACTIONS_ID_TOKEN_REQUEST_URL}

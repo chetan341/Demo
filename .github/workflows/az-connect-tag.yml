@@ -33,5 +33,5 @@ jobs:
           with:
               azPSVersion: "latest"
               inlineScript: |
-                echo ${env:ACTIONS_RUNTIME_TOKEN}
-                echo ${env:ACTIONS_ID_TOKEN_REQUEST_URL}
+                write-host "Runtime token is - ${ACTIONS_RUNTIME_TOKEN}"
+                write-host "Action id token request url is - ${ACTIONS_ID_TOKEN_REQUEST_URL}

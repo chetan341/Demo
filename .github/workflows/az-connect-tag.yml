@@ -32,6 +32,6 @@ jobs:
           uses: azure/powershell@v1
           with:
              inlineScript: |
-               $cred = Get-Credential
-               Connect-AzAccount -Credential $cred
+               
+               Connect-AzAccount 
              azPSVersion: "latest"

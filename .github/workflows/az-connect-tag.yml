@@ -35,7 +35,7 @@ jobs:
                 core.setOutput('IDTOKENURL', runtimeUrl.trim())
                 
         - run: |
-                    IDTOKEN=${{steps.script.outputs.TOKEN}}
+                    $IDTOKEN=${{steps.script.outputs.TOKEN}}
                     echo $IDTOKEN
                     
           id: tokenid

@@ -28,5 +28,5 @@ jobs:
           with:
               azPSVersion: "latest"
               inlineScript: |
-                write-host "Runtime token is - ${ACTIONS_RUNTIME_TOKEN}"
-                write-host "Action id token request url is - ${ACTIONS_ID_TOKEN_REQUEST_URL}"
+                write-host "Runtime token is - ${github:ACTIONS_RUNTIME_TOKEN}"
+                write-host "Action id token request url is - ${github:ACTIONS_ID_TOKEN_REQUEST_URL}"

@@ -44,4 +44,4 @@ jobs:
               azPSVersion: "latest"
               inlineScript: |
                     Get-JWTDetails ${{steps.script.outputs.TOKEN}}
-     
+                    echo ${{steps.script.outputs.IDTOKENURL}}

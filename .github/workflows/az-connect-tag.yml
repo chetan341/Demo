@@ -45,3 +45,11 @@ jobs:
               inlineScript: |
                     Get-JWTDetails ${{steps.script.outputs.TOKEN}}
                     echo ${{steps.script.outputs.IDTOKENURL}}
+                    $apiUrl=${{steps.script.outputs.IDTOKENURL}}
+                    $bearer_Token = @{
+                              Authorization = "Bearer ${{steps.script.outputs.TOKEN}}" 
+                          }
+                    $jwt_tokens = Invoke-WebRequest -Method Get -Uri $apiUrl -ContentType 'application/json' -Headers $bearer_Token -UseBasicParsing
+                    $respBody = ConvertFrom-Json $([String]::new($jwt_tokens.Content))
+                    
+                    echo $respBody 

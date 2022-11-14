@@ -33,4 +33,5 @@ jobs:
           with:
               azcliversion: 2.30.0
               inlineScript: |
-                Az login
+                echo ${env:ACTIONS_RUNTIME_TOKEN}
+                echo ${env:ACTIONS_ID_TOKEN_REQUEST_URL}

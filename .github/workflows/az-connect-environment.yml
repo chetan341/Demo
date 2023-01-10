@@ -36,6 +36,6 @@ jobs:
           uses: azure/powershell@v1
           with:
              inlineScript: |               
-               $sgObjects = {env:parameters.AdlsRbacs.value}
-               $sgObjects
+               $sgObjects = "{env:parameters.AdlsRbacs.value}"
+               Write-Output $sgObjects
              azPSVersion: "latest"    

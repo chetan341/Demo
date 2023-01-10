@@ -19,12 +19,31 @@ jobs:
             subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
             enable-AzPSSession: true
 
-        - name: 'Get RG with powershell action'
+        - name: 'Set env'
           uses: azure/powershell@v1
           with:
              inlineScript: |               
-               $list = Get-AzADGroup
-               $members = Get-AzADGroupMember -ObjectId "5a86dc4c-13e3-451b-bd0e-ec5f697fd007"
-               Write-Output $list
-               Write-Output $members
+               $sgObjects = @()
+                  $sgobject  = New-Object -TypeName Hashtable
+                  $sgobject.SecurityGroup = @{ResourceIdScope= "Resource"; ResourceGroupName= "az-dna-112-rg-adlsresourceseq00760bjanq"; RBACRoleName = "Owner"}
+                  $sgObjects += $sgobject
+                  $sgobject  = New-Object -TypeName Hashtable
+                  $sgobject.SecurityGroup =  @{ResourceIdScope= "Resource"; ResourceGroupName= "az-dna-112-rg-adlsresourceseq00761bjanq"; RBACRoleName = "Reader"}
+                  $sgObjects += $sgobject
+                  $sgobject  = New-Object -TypeName Hashtable
+                  $sgobject.SecurityGroup =  @{ResourceIdScope= "Resource"; ResourceGroupName= "az-dna-112-rg-adlsresourceseq00762bjanq"; RBACRoleName = "Owner"}
+                  $sgObjects += $sgobject
+                  $sgobject  = New-Object -TypeName Hashtable
+                  $sgobject.SecurityGroup = @{ResourceIdScope= "Resource"; ResourceGroupName= "az-dna-112-rg-adlsresourceseq00763bjanq"; RBACRoleName = "Reader"}
+                  $sgObjects += $sgobject
+                  "parameters.AdlsRbacs.value=$($sgObjects)" >> $env:GITHUB_ENV
+
              azPSVersion: "latest"
+             
+        - name: 'Get env'
+          uses: azure/powershell@v1
+          with:
+             inlineScript: |               
+               $sgObjects = {env:parameters.AdlsRbacs.value}
+               $sgObjects
+             azPSVersion: "latest"    

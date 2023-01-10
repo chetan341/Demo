@@ -7,8 +7,7 @@ jobs:
       runs-on: windows-latest
       
       steps:
-        - name: 'Set env'
-          uses: azure/powershell@v1
+        - name: 'Set env'          
           with:
              inlineScript: |               
                $sgObjects = @()
@@ -29,7 +28,6 @@ jobs:
              azPSVersion: "latest"
              
         - name: 'Get env'
-          uses: azure/powershell@v1
           with:
              inlineScript: |               
                $sgObjects = "{env:parameters.AdlsRbacs.value}"

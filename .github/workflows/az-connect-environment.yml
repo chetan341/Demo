@@ -1,4 +1,4 @@
-name: Run Get-ADGroups - OIDC
+name: Run Set env
 
 on: [workflow_dispatch]
 

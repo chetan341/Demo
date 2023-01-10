@@ -33,6 +33,6 @@ jobs:
                Write-Output $sgObjects
                
                foreach ($item in $sgObjects){
-                   Write-Output $item
-                   $item | ConvertTo-Json -Depth 5
+                   Write-Output $item.SecurityGroup
+                   $item.SecurityGroup | ConvertTo-Json -Depth 5
                  }

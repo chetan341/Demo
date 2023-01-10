@@ -33,3 +33,7 @@ jobs:
                Write-Output $sgObjects
                
                $array = $sgObjects.split(" ")
+               foreach ($item in $array){
+                   Write-Output $item
+                   $item | ConvertTo-Json -Depth 5
+                 }

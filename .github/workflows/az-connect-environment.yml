@@ -8,8 +8,8 @@ jobs:
       
       steps:
         - name: 'Set env'          
-          with:
-             inlineScript: |               
+          shell: pwsh
+          run: |               
                $sgObjects = @()
                   $sgobject  = New-Object -TypeName Hashtable
                   $sgobject.SecurityGroup = @{ResourceIdScope= "Resource"; ResourceGroupName= "az-dna-112-rg-adlsresourceseq00760bjanq"; RBACRoleName = "Owner"}
@@ -24,12 +24,9 @@ jobs:
                   $sgobject.SecurityGroup = @{ResourceIdScope= "Resource"; ResourceGroupName= "az-dna-112-rg-adlsresourceseq00763bjanq"; RBACRoleName = "Reader"}
                   $sgObjects += $sgobject
                   "adlsRbacs=$($sgObjects)" >> $env:GITHUB_ENV
-
-             azPSVersion: "latest"
              
-        - name: 'Get env'
-          with:
-             inlineScript: |               
+        - name: 'Get env'                    
+          shell: pwsh
+          run: |                         
                $sgObjects = {{env.adlsRbacs}}
                Write-Output $sgObjects
-             azPSVersion: "latest"    

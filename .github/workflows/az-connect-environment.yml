@@ -32,7 +32,7 @@ jobs:
                $sgObjects.GetType()               
                Write-Output $sgObjects
                
-               foreach ($item in $ $sgObjects){
+               foreach ($item in $sgObjects){
                    Write-Output $item
                    $item | ConvertTo-Json -Depth 5
                  }

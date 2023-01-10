@@ -9,7 +9,7 @@ permissions:
 jobs:  
   Windows-latest:
       runs-on: windows-latest
-      environment: dev
+      
       steps:
         - name: 'Set env'
           uses: azure/powershell@v1

@@ -23,13 +23,13 @@ jobs:
                   $sgobject  = New-Object -TypeName Hashtable
                   $sgobject.SecurityGroup = @{ResourceIdScope= "Resource"; ResourceGroupName= "az-dna-112-rg-adlsresourceseq00763bjanq"; RBACRoleName = "Reader"}
                   $sgObjects += $sgobject
-                  "parameters.AdlsRbacs.value=$($sgObjects)" >> $env:GITHUB_ENV
+                  "adlsRbacs=$($sgObjects)" >> $env:GITHUB_ENV
 
              azPSVersion: "latest"
              
         - name: 'Get env'
           with:
              inlineScript: |               
-               $sgObjects = "{env:parameters.AdlsRbacs.value}"
+               $sgObjects = {{env.adlsRbacs}}
                Write-Output $sgObjects
              azPSVersion: "latest"    

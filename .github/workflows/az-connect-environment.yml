@@ -32,8 +32,7 @@ jobs:
                $sgObjects.GetType()               
                Write-Output $sgObjects
                
-               $array = $sgObjects.split(" ")
-               foreach ($item in $array){
+               foreach ($item in $ $sgObjects){
                    Write-Output $item
                    $item | ConvertTo-Json -Depth 5
                  }

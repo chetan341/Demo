@@ -1,38 +1,48 @@
 name: Run Set env
 
-on: [workflow_dispatch]
+on: 
+  workflow_dispatch:
+    inputs:
+      businessEnvironment:
+        description: 'ADLS Environment'
+        type: choice
+        default: 'Non-Prod'
+        options:
+         - Prod
+         - Non-Prod
+        required: true
+
      
 jobs:  
   Windows-latest:
       runs-on: windows-latest
       
       steps:
-        - name: 'Set env'          
-          shell: pwsh
-          run: |               
-               $sgObjects = @()
-                  $sgobject  = New-Object -TypeName Hashtable
-                  $sgobject.SecurityGroup = @{ResourceIdScope= "Resource"; ResourceGroupName= "az-dna-112-rg-adlsresourceseq00760bjanq"; RBACRoleName = "Owner"}
-                  $sgObjects += $sgobject
-                  $sgobject  = New-Object -TypeName Hashtable
-                  $sgobject.SecurityGroup =  @{ResourceIdScope= "Resource"; ResourceGroupName= "az-dna-112-rg-adlsresourceseq00761bjanq"; RBACRoleName = "Reader"}
-                  $sgObjects += $sgobject
-                  $sgobject  = New-Object -TypeName Hashtable
-                  $sgobject.SecurityGroup =  @{ResourceIdScope= "Resource"; ResourceGroupName= "az-dna-112-rg-adlsresourceseq00762bjanq"; RBACRoleName = "Owner"}
-                  $sgObjects += $sgobject
-                  $sgobject  = New-Object -TypeName Hashtable
-                  $sgobject.SecurityGroup = @{ResourceIdScope= "Resource"; ResourceGroupName= "az-dna-112-rg-adlsresourceseq00763bjanq"; RBACRoleName = "Reader"}
-                  $sgObjects += $sgobject
-                  "adlsRbacs=$($sgObjects)" >> $env:GITHUB_ENV
-             
-        - name: 'Get env'                    
-          shell: pwsh
-          run: |                         
-               $sgObjects = {{env.adlsRbacs}}
-               $sgObjects.GetType()               
-               Write-Output $sgObjects
-               
-               foreach ($item in $sgObjects){
-                   Write-Output $item.SecurityGroup
-                   $item.SecurityGroup | ConvertTo-Json -Depth 5
-                 }
+       
+           - name: Set environments values
+             run: |
+                   if ($env_code -eq 'Non-Prod' ){
+                       Write-Output 'Non prod'
+                       $envs = @('dev','tst','pre')
+                       echo "parameters.envs.value=$envs" >> "$GITHUB_ENV"
+                   }
+                   else{
+                       Write-Output 'prod'
+                       $envs = @('prd')
+                       echo "parameters.envs.value=$envs" >> "$GITHUB_ENV"
+                   }
+             env:
+               env_code: ${{github.event.inputs.businessEnvironment}}
+          
+          
+           - name: 'Get env'                    
+             shell: pwsh
+             run: |                         
+                    $sgObjects = ${env:parameters.envs.value}
+                    Write-Output $sgObjects.GetType()               
+                    Write-Output $sgObjects
+
+                    foreach ($item in $sgObjects){
+                        Write-Output $item.SecurityGroup
+                        $item.SecurityGroup | ConvertTo-Json -Depth 5
+                      }

@@ -37,11 +37,6 @@ jobs:
            - name: 'Get env'                    
              shell: pwsh
              run: |                         
-                    $sgObjects = $env:envsParam
-                    Write-Output $sgObjects            
-                    Write-Output $sgObjects.GetType()   
+                    $sgObjects = ${env:envsParam}
+                    Write-Output "${env:envsParam}"             
 
-                    foreach ($item in $sgObjects){
-                        Write-Output $item.SecurityGroup
-                        $item.SecurityGroup | ConvertTo-Json -Depth 5
-                      }

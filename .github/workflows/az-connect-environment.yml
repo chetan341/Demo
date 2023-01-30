@@ -21,7 +21,7 @@ jobs:
        
            - name: Set environments values
              run: |
-                   if ($env_code -eq 'Non-Prod' ){
+                   if ('${env:env_code}' -eq 'Non-Prod' ){
                        Write-Output 'Non prod'
                        $envs = @('dev','tst','pre')
                        echo "parameters.envs.value=$envs" >> "$GITHUB_ENV"

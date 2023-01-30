@@ -38,5 +38,5 @@ jobs:
              shell: pwsh
              run: |                         
                     $sgObjects = ${env:envsParam}
-                    Write-Output "${env:envsParam}"             
+                    Write-Output "(Invoke-Expression ${env:envsParam})"             
 

@@ -21,7 +21,7 @@ jobs:
        
            - name: Set environments values
              run: |
-                   if ('${env:env_code}' -eq 'Non-Prod' ){
+                   if ('${{ github.event.inputs.businessEnvironment }}' -eq 'Non-Prod' ){
                        Write-Output 'Non prod'
                        $envs = @('dev','tst','pre')
                        echo "parameters.envs.value=$envs" >> "$GITHUB_ENV"
@@ -31,8 +31,7 @@ jobs:
                        $envs = @('prd')
                        echo "parameters.envs.value=$envs" >> "$GITHUB_ENV"
                    }
-             env:
-               env_code: ${{github.event.inputs.businessEnvironment}}
+       
           
           
            - name: 'Get env'                    

@@ -29,7 +29,7 @@ jobs:
                    else{
                        Write-Output 'prod'
                        $envs = @('prd')
-                       echo "parameters.envs.value=$envs" >> $GITHUB_ENV
+                       echo "envsParam=$envs" >> $GITHUB_ENV
                    }
        
           
@@ -37,9 +37,9 @@ jobs:
            - name: 'Get env'                    
              shell: pwsh
              run: |                         
-                    $sgObjects = ${env:parameters.envs.value}
-                    Write-Output $sgObjects.GetType()               
-                    Write-Output $sgObjects
+                    $sgObjects = $env:envsParam
+                    Write-Output $sgObjects            
+                    Write-Output $sgObjects.GetType()   
 
                     foreach ($item in $sgObjects){
                         Write-Output $item.SecurityGroup

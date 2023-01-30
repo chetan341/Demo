@@ -24,12 +24,12 @@ jobs:
                    if ('${{ github.event.inputs.businessEnvironment }}' -eq 'Non-Prod' ){
                        Write-Output 'Non prod'
                        $envs = @('dev','tst','pre')
-                       echo "parameters.envs.value=$envs" >> $GITHUB_ENV
+                       echo "parameters.envs.value=$envs" >> $env:GITHUB_ENV
                    }
                    else{
                        Write-Output 'prod'
                        $envs = @('prd')
-                       echo "envsParam=$envs" >> $GITHUB_ENV
+                       echo "envsParam=$envs" >> $env:GITHUB_ENV
                    }
        
           

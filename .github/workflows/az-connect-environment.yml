@@ -40,4 +40,19 @@ jobs:
           run: |
                 Write-Output "Triggering workflow"
                 
+                Write-Output "EnsureContainer Request JSON Body:"
+                  $reqJsonBody
+                  $apiUrl="https://api.github.com/repos/Chetan341Kadam/Demo/actions/workflows/31914882"
+                  $bearer_Token = @{
+                              Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}" 
+                          }
+                  Write-Output "Invoking POST to: $apiUrl"
+                  $res = Invoke-WebRequest -Method POST -Uri $apiUrl `
+                    -ContentType 'application/json' -Headers $bearer_Token -UseBasicParsing
+                  Write-Output "Received response: $($res.StatusCode)"
+                  $res.Content           
+                  if ($res.StatusCode -ne [System.Net.HttpStatusCode]::OK) {
+                    Write-Log -logMessage "Could not generate container for above request body."
+                  }    
+                
 

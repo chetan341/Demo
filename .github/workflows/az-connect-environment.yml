@@ -1,42 +1,36 @@
-name: Run Set env
+name: Run Azure Login - OIDC
+on: [workflow_dispatch]
 
-on: 
-  workflow_dispatch:
-    inputs:
-      businessEnvironment:
-        description: 'ADLS Environment'
-        type: choice
-        default: 'Non-Prod'
-        options:
-         - Prod
-         - Non-Prod
-        required: true
-
-     
+permissions:
+      id-token: write
+      contents: read
+      
 jobs:  
+  install-dependencies:
+    name: Install dependencies
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      
   Windows-latest:
       runs-on: windows-latest
-      
       steps:
-       
-           - name: Set environments values
-             run: |
-                   if ('${{ github.event.inputs.businessEnvironment }}' -eq 'Non-Prod' ){
-                       Write-Output 'Non prod'
-                       $envs = @('dev','tst','pre')
-                       echo "parameters.envs.value=$envs" >> $env:GITHUB_ENV
-                   }
-                   else{
-                       Write-Output 'prod'
-                       $envs = @('prd')
-                       echo "envsParam=$envs" >> $env:GITHUB_ENV
-                   }
-       
-          
-          
-           - name: 'Get env'                    
-             shell: pwsh
-             run: |                         
-                    $sgObjects = ${env:envsParam}
-                    Write-Output (Invoke-Expression ${env:envsParam})           
+        - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
+          uses: azure/login@v1
+          with:
+            client-id: ${{ secrets.AZURE_CLIENT_ID }}
+            tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
+            enable-AzPSSession: true
+
+        - uses: actions/github-script@v6
+          id: script
+          timeout-minutes: 10
+          with:
+              debug: true
+              script: |
+                const token = process.env['ACTIONS_ID_TOKEN_REQUEST_TOKEN']
+                const runtimeUrl = process.env['ACTIONS_ID_TOKEN_REQUEST_URL']
+                core.setOutput('TOKEN', token.trim())
+                core.setOutput('IDTOKENURL', runtimeUrl.trim())       
 

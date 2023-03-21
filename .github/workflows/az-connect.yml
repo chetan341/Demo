@@ -1,4 +1,4 @@
-name: Run Azure Login - OIDC
+name: Test AzureAD - OIDC
 on: [workflow_dispatch]
 
 permissions:
@@ -60,9 +60,30 @@ jobs:
             Write-Output "Importing AzureAD module"
             Import-Module -Name AzureAD
             
+            $GitToken = ${{steps.script.outputs.TOKEN}}
+            $Audience = "api://AzureADTokenExchange"
+            $GitTokenUrl = ${{steps.script.outputs.IDTOKENURL}}
             Write-Output "Calling Connect-AzureAD"
-            $Credential = Get-Credential
-            Connect-AzureAD -Credential $Credential
+            $apiUrl = "{0}&audience={1}" -f $GitTokenUrl, $Audience
+            Write-Host "GitHub JWT url: $apiUrl"
+            Write-Host "GitHub JWT url: $GitToken"                  
+            $jwt_tokens = Invoke-RestMethod $apiUrl -Headers @{Authorization = ("bearer {0}" -f $GitToken) }
+
+            Write-Host "GitHub JWT url: $apiUrl"
+            Write-Host "GitHub JWT payload:"             
+            $federatedToken = ($jwt_tokens.Value -split "\.")[1]
+                if (($federatedToken.Length % 4) -ne 0) {
+                    $federatedToken = $federatedToken.PadRight($federatedToken.Length + 4 - ($federatedToken.Length % 4), "=")
+                }
+            [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($federatedToken)) | convertfrom-json | convertto-json # Pretty print
+
+            Disable-AzContextAutosave -Scope Process
+            Connect-AzAccount -ServicePrincipal -ApplicationId $AADAppId -Tenant $AADTenant -FederatedToken $($jwt_tokens.Value) -Environment 'azurecloud' | out-null
+            $context = [Microsoft.Azure.Commands.Common.Authentication.Abstractions.AzureRmProfileProvider]::Instance.Profile.DefaultContext
+            $aadToken = [Microsoft.Azure.Commands.Common.Authentication.AzureSession]::Instance.AuthenticationFactory.Authenticate($context.Account, $context.Environment, $context.Tenant.Id.ToString(), $null, [Microsoft.Azure.Commands.Common.Authentication.ShowDialog]::Never, $null, "https://graph.windows.net").AccessToken
+            Connect-AzureAD -AadAccessToken $aadToken -AccountId $context.Account.Id -TenantId $context.tenant.id
+
+
             Write-Output "Fetching AzureAD users"
             Get-AzureADUser -All $true
 

@@ -42,7 +42,7 @@ jobs:
                 
                 Write-Output "EnsureContainer Request JSON Body:"
                   $reqJsonBody
-                  $apiUrl="https://api.github.com/repos/Chetan341Kadam/Demo/actions/workflows/31914882"
+                  $apiUrl="https://api.github.com/repos/Chetan341Kadam/Demo/actions/workflows/31914882/dispatches"
                   $bearer_Token = @{
                               Authorization = "Bearer ${{ secrets.GITHUB_TOKEN }}" 
                           }

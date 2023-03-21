@@ -4,10 +4,16 @@ on: [workflow_dispatch]
 permissions:
       id-token: write
       contents: read
-    
-jobs:   
+      
+jobs:  
+  install-dependencies:
+    name: Install dependencies
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      
   Windows-latest:
-      runs-on: windows-latest 
+      runs-on: windows-latest
       steps:
         - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
           uses: azure/login@v1
@@ -16,6 +22,17 @@ jobs:
             tenant-id: ${{ secrets.AZURE_TENANT_ID }}
             subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
             enable-AzPSSession: true
+
+        - uses: actions/github-script@v6
+          id: script
+          timeout-minutes: 10
+          with:
+              debug: true
+              script: |
+                const token = process.env['ACTIONS_ID_TOKEN_REQUEST_TOKEN']
+                const runtimeUrl = process.env['ACTIONS_ID_TOKEN_REQUEST_URL']
+                core.setOutput('TOKEN', token.trim())
+                core.setOutput('IDTOKENURL', runtimeUrl.trim())
 
         #- uses: actions/checkout@v3
         - name: Install from PSGallery

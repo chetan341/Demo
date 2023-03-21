@@ -42,8 +42,8 @@ jobs:
                 
                 Write-Output "EnsureContainer Request JSON Body:"
                   $reqJsonBody = @{
-                    ref: 'topic-branch';
-                    inputs: $null
+                    ref = 'feature/github-action-azlogin';
+                    inputs = $null
                   }| ConvertTo-Json -Depth 10
                   $reqJsonBody
                   $apiUrl="https://api.github.com/repos/Chetan341Kadam/Demo/actions/workflows/31914882/dispatches"

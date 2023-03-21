@@ -60,9 +60,9 @@ jobs:
             Write-Output "Importing AzureAD module"
             Import-Module -Name AzureAD
             
-            $GitToken = ${{steps.script.outputs.TOKEN}}
+            $GitToken = "${{steps.script.outputs.TOKEN}}"
             $Audience = "api://AzureADTokenExchange"
-            $GitTokenUrl = ${{steps.script.outputs.IDTOKENURL}}
+            $GitTokenUrl = "${{steps.script.outputs.IDTOKENURL}}"
             Write-Output "Calling Connect-AzureAD"
             $apiUrl = "{0}&audience={1}" -f $GitTokenUrl, $Audience
             Write-Host "GitHub JWT url: $apiUrl"

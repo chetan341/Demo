@@ -34,7 +34,10 @@ jobs:
                   $res.Content           
                   if ($res.StatusCode -ne [System.Net.HttpStatusCode]::OK) {
                     Write-Log -logMessage "Could not generate container for above request body."
-                  }
-                
+                  }      
+                  
+        - name: Trigger workflows
+          run: |
+                Write-Output "Triggering workflow"
                 
 

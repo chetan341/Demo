@@ -76,7 +76,7 @@ jobs:
                     $federatedToken = $federatedToken.PadRight($federatedToken.Length + 4 - ($federatedToken.Length % 4), "=")
                 }
             [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($federatedToken)) | convertfrom-json | convertto-json # Pretty print
-
+            Import-Module -Name Az.Accounts
             Disable-AzContextAutosave -Scope Process
             Connect-AzAccount -ServicePrincipal -ApplicationId $AADAppId -Tenant $AADTenant -FederatedToken $($jwt_tokens.Value) -Environment 'azurecloud' | out-null
             $context = [Microsoft.Azure.Commands.Common.Authentication.Abstractions.AzureRmProfileProvider]::Instance.Profile.DefaultContext

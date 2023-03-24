@@ -41,10 +41,10 @@ jobs:
                 Write-Output "Triggering workflow"
                 
                 Write-Output "EnsureContainer Request JSON Body:"
-                $branch = '${{GITHUB.REF}}'
+                $branch = "${{GITHUB.REF}}"
                 $branch = $branch.replace("refs/heads/", "")
                   $reqJsonBody = @{
-                    ref = '${{GITHUB.REF}}';
+                    ref = $branch;
                     inputs = $null
                   }| ConvertTo-Json -Depth 10
                   $reqJsonBody

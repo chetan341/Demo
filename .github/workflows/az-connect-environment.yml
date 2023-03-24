@@ -42,7 +42,7 @@ jobs:
                 
                 Write-Output "EnsureContainer Request JSON Body:"
                   $reqJsonBody = @{
-                    ref = 'feature/github-action-azlogin';
+                    ref = '${{GITHUB.REF}}';
                     inputs = $null
                   }| ConvertTo-Json -Depth 10
                   $reqJsonBody

@@ -52,7 +52,7 @@ jobs:
                           }
                   Write-Output "Invoking POST to: $apiUrl"
                   $res = Invoke-WebRequest -Method POST -Uri $apiUrl -Body $reqJsonBody `
-                    -ContentType 'application/json' -Headers $bearer_Token -UseBasicParsing
+                    -ContentType 'application/json' -Headers $bearer_Token 
                   Write-Output "Received response: $($res.StatusCode)"
                   $res.Content           
                   if ($res.StatusCode -ne [System.Net.HttpStatusCode]::OK) {

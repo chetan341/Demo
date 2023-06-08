@@ -22,6 +22,17 @@ jobs:
             tenant-id: ${{ secrets.AZURE_TENANT_ID }}
             subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
             enable-AzPSSession: true
+            
+        - name: Remove AAD group demo
+          uses: azure/powershell@v1
+          with:
+              azPSVersion: "latest"
+              inlineScript: |  
+                   $group = New-AzureADGroup -DisplayName "My new group" -MailEnabled $false -SecurityEnabled $true -MailNickName "NotSet"
+                   Get-AzADGroup -ObjectId $($group.ObjectId) | Remove-AzADGroup
+                   $group = New-AzureADGroup -DisplayName "My new group 2" -MailEnabled $false -SecurityEnabled $true -MailNickName "NotSet"
+                   Remove-AzADGroup -ObjectId $($group.ObjectId)
+              enable-AzPSSession: true
 
         - uses: actions/github-script@v6
           id: script
@@ -38,6 +49,7 @@ jobs:
           run: #npm install @actions/core
                #npm install @actions/github
                install-module -name JWTDetails -Scope CurrentUser -Force
+        
         - name: 'Get JWT token details'
           uses: azure/powershell@v1
           with:

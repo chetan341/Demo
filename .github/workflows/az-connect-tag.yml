@@ -29,8 +29,12 @@ jobs:
               azPSVersion: "latest"
               inlineScript: |  
                    $group = New-AzADGroup -DisplayName "My new group 1" -MailNickname "NotSet"
+                   Write-Output "New group is create -"
+                   $group
                    Get-AzADGroup -ObjectId $($group.ObjectId) | Remove-AzADGroup
                    $group = New-AzADGroup -DisplayName "My new group 2" -MailNickname "NotSet"
+                   Write-Output "Another new group is create -"
+                   $group
                    Remove-AzADGroup -ObjectId $($group.ObjectId)
               enable-AzPSSession: true
               

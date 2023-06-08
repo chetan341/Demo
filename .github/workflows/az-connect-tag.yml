@@ -28,11 +28,9 @@ jobs:
           with:
               azPSVersion: "latest"
               inlineScript: |  
-                   Install-Module -Name Az.Accounts -Force -AllowClobber
-                   Install-Module -Name Az.Resources -Force -AllowClobber
-                   $group = New-AzureADGroup -DisplayName "My new group" -MailEnabled $false -SecurityEnabled $true -MailNickName "NotSet"
+                   $group = New-AzADGroup -DisplayName "My new group 1" -MailNickname "NotSet"
                    Get-AzADGroup -ObjectId $($group.ObjectId) | Remove-AzADGroup
-                   $group = New-AzureADGroup -DisplayName "My new group 2" -MailEnabled $false -SecurityEnabled $true -MailNickName "NotSet"
+                   $group = New-AzADGroup -DisplayName "My new group 2" -MailNickname "NotSet"
                    Remove-AzADGroup -ObjectId $($group.ObjectId)
               enable-AzPSSession: true
               

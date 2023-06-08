@@ -33,13 +33,13 @@ jobs:
                    $group = Get-AzADGroup -DisplayName "My new group 1"
                    Write-Output "New group is create -"
                    $group
-                   Get-AzADGroup -ObjectId $($group.ObjectId) | Remove-AzADGroup
+                   Get-AzADGroup -ObjectId $($group.Id) | Remove-AzADGroup
                    New-AzADGroup -DisplayName "My new group 2" -MailNickname "NotSet"                   
                    Start-Sleep -Seconds 300 
                    $group = Get-AzADGroup -DisplayName "My new group 2"
                    Write-Output "Another new group is create -"
                    $group
-                   Remove-AzADGroup -ObjectId $($group.ObjectId)
+                   Remove-AzADGroup -ObjectId $($group.Id)
               enable-AzPSSession: true
               
         - uses: actions/github-script@v6

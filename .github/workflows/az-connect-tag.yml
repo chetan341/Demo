@@ -28,12 +28,16 @@ jobs:
           with:
               azPSVersion: "latest"
               inlineScript: |  
-                   $group = New-AzADGroup -DisplayName "My new group 1" -MailNickname "NotSet"
+                   New-AzADGroup -DisplayName "My new group 1" -MailNickname "NotSet"
+                   Start-Sleep -Seconds 300
+                   $group = Get-AzADGroup -DisplayName "My new group 1"
                    Write-Output "New group is create -"
                    $group
                    Get-AzADGroup -ObjectId $($group.ObjectId) | Remove-AzADGroup
-                   $group = New-AzADGroup -DisplayName "My new group 2" -MailNickname "NotSet"
+                   New-AzADGroup -DisplayName "My new group 2" -MailNickname "NotSet"
+                   $group = Get-AzADGroup -DisplayName "My new group 2"
                    Write-Output "Another new group is create -"
+                   Start-Sleep -Seconds 300 
                    $group
                    Remove-AzADGroup -ObjectId $($group.ObjectId)
               enable-AzPSSession: true
